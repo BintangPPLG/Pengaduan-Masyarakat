@@ -24,6 +24,52 @@
 
 ---
 
+## 📸 Pratinjau Antarmuka (Screenshots)
+
+Berikut beberapa tampilan utama antarmuka **SuaraWarga** yang telah diperbarui dengan standar desain modern (*agency-grade, non-bold, emerald & porcelain slate*):
+
+### 1. Beranda & Hero Card 3D Interaktif
+> Tampilan landing page modern dengan kartu 3D tilt berperspektif dinamis, metrik statistik, dan radar pin Leaflet OpenStreetMap.
+
+![Beranda & Hero 3D Card](docs/screenshots/01-landing-hero.png)
+
+---
+
+### 2. Dashboard Pengaduan Warga
+> Ringkasan metrik status real-time (*Total, Menunggu Review, Disetujui, Ditolak*), filter kategori, pencarian cerdas, dan kartu laporan warga.
+
+![Dashboard Pengaduan Warga](docs/screenshots/04-dashboard-warga.png)
+
+---
+
+### 3. Formulir Laporan Baru & Peta Presisi Leaflet
+> Form pengaduan terstruktur dengan pemetaan titik koordinat interaktif (klik peta, drag marker, atau tombol deteksi GPS otomatis).
+
+![Formulir Laporan & Peta Leaflet](docs/screenshots/05-laporan-baru.png)
+
+---
+
+### 4. Detail Pengaduan & Utas Diskusi Warga
+> Halaman detail pengaduan dengan visualisasi pin Leaflet, ringkasan kronologi kejadian, dan kolom tanggapan dua arah.
+
+![Detail Pengaduan & Peta Leaflet](docs/screenshots/06-detail-laporan.png)
+
+---
+
+### 5. Panel Moderasi Petugas & Administrator
+> Antarmuka verifikasi bagi petugas untuk meninjau laporan, memberikan persetujuan (*Approve*), atau penolakan dengan catatan resmi (*Reject*).
+
+![Panel Moderasi Petugas](docs/screenshots/07-admin-moderasi.png)
+
+---
+
+### 6. Autentikasi Pengguna (Login)
+> Halaman masuk modern beraksen emerald dengan pemisahan peran yang aman bagi masyarakat dan petugas.
+
+![Halaman Login](docs/screenshots/03-auth-login.png)
+
+---
+
 ## 🏗️ Arsitektur Proyek (Monorepo)
 
 ```text
