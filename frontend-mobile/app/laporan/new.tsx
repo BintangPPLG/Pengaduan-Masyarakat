@@ -18,6 +18,17 @@ import {
 } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import LocationSelector from '@/components/LocationSelector';
+import {
+  ArrowLeft,
+  Camera,
+  Send,
+  X,
+  Tag,
+  FileText,
+  AlertCircle,
+  MapPin,
+  Image as ImageIcon,
+} from 'lucide-react-native';
 
 const MAX_IMAGES = 5;
 const MAX_FILE_BYTES = 5 * 1024 * 1024; // 5 MB
@@ -110,8 +121,8 @@ export default function NewReportScreen() {
         })
         .join('\n');
       Alert.alert(
-        '📛 Foto terlalu besar',
-        `Foto berikut melebihi batas 5 MB dan tidak akan ditambahkan:\n\n${names}\n\nGunakan foto dengan ukuran ≤ 5 MB.`
+        'Foto terlalu besar',
+        `Foto berikut melebihi batas 5 MB dan tidak disertakan:\n\n${names}\n\nGunakan foto dengan ukuran ≤ 5 MB.`
       );
     }
 
@@ -174,11 +185,11 @@ export default function NewReportScreen() {
   if (loadCat) {
     return (
       <View
-        className="flex-1 items-center justify-center gap-3 bg-cream-100"
+        className="flex-1 items-center justify-center gap-3 bg-[#F8FAFC]"
         style={{ paddingTop: insets.top }}
       >
-        <ActivityIndicator size="large" color="#6FCF97" />
-        <Text className="text-sm text-inkMuted">Memuat kategori...</Text>
+        <ActivityIndicator size="large" color="#10B981" />
+        <Text className="text-xs font-medium text-slate-500">Memuat kategori...</Text>
       </View>
     );
   }
@@ -187,87 +198,103 @@ export default function NewReportScreen() {
 
   return (
     <ScrollView
-      className="flex-1 bg-cream-100"
+      className="flex-1 bg-[#F8FAFC]"
       contentContainerStyle={{
-        paddingTop: insets.top + 12,
+        paddingTop: insets.top + 8,
         paddingHorizontal: 16,
-        paddingBottom: insets.bottom + 40,
+        paddingBottom: insets.bottom + 36,
       }}
       keyboardShouldPersistTaps="handled"
+      showsVerticalScrollIndicator={false}
     >
-      {/* ─── Header card ─────────────────────────────────────────── */}
-      <View className="mb-4 rounded-3xl border border-white/90 bg-white/95 p-5 shadow-clay-sm">
-        <Text className="self-start rounded-full bg-cream-200 px-2.5 py-1 text-[11px] font-extrabold text-ink">
-          Form Laporan
+      {/* Back button */}
+      <Pressable
+        onPress={() => router.back()}
+        className="mb-4 flex-row items-center gap-1.5 self-start py-1"
+      >
+        <ArrowLeft size={14} color="#64748B" />
+        <Text className="text-xs font-medium text-slate-500">Daftar Laporan</Text>
+      </Pressable>
+
+      {/* Header card */}
+      <View className="mb-4 rounded-[28px] border border-slate-200/90 bg-white/95 p-5 shadow-xs space-y-2">
+        <View className="flex-row items-center gap-1.5 self-start rounded-full border border-emerald-200 bg-emerald-50 px-2.5 py-0.5">
+          <View className="h-1.5 w-1.5 rounded-full bg-emerald-500" />
+          <Text className="text-[10px] font-medium text-emerald-800">
+            Formulir Aspirasi
+          </Text>
+        </View>
+
+        <Text className="text-xl font-semibold tracking-tight text-slate-900">
+          Buat Laporan Baru
         </Text>
-        <Text className="mt-2 text-2xl font-extrabold text-ink">Tambah Laporan</Text>
+
         {user ? (
-          <View className="mt-2 flex-row items-center gap-1.5">
-            <View className="h-6 w-6 items-center justify-center rounded-full bg-peach-500">
-              <Text className="text-[11px] font-bold text-white">
+          <View className="flex-row items-center gap-1.5">
+            <View className="h-5 w-5 items-center justify-center rounded-full bg-emerald-600">
+              <Text className="text-[10px] font-medium text-white">
                 {user.username.charAt(0).toUpperCase()}
               </Text>
             </View>
-            <Text className="text-[13px] font-semibold text-ink">{user.username}</Text>
-            <Text className="text-[13px] text-inkMuted">· {user.role}</Text>
+            <Text className="text-xs font-medium text-slate-700">{user.username}</Text>
+            <Text className="text-xs text-slate-400 font-normal">· Pengguna Warga</Text>
           </View>
         ) : null}
-        <Text className="mt-2 text-[13px] leading-[19px] text-inkMuted">
-          Isi semua kolom dengan jelas dan spesifik. Foto bersifat opsional (maks. {MAX_IMAGES} foto, maks. 5 MB/foto).
+
+        <Text className="text-xs leading-relaxed text-slate-500 font-normal">
+          Isi formulir dengan detail lokasi dan kronologi yang jelas agar petugas dapat menindaklanjuti secara tepat.
         </Text>
       </View>
 
-      {/* ─── Error banner ────────────────────────────────────────── */}
+      {/* Error banner */}
       {error ? (
-        <View className="mb-4 rounded-2xl border border-rose-200 bg-rose-50 p-3.5">
-          <Text className="text-sm font-semibold text-rose-800">{error}</Text>
+        <View className="mb-4 flex-row items-start gap-2 rounded-xl border border-rose-200 bg-rose-50 p-3">
+          <AlertCircle size={14} color="#E11D48" className="mt-0.5" />
+          <Text className="flex-1 text-xs font-medium text-rose-800 leading-tight">{error}</Text>
         </View>
       ) : null}
 
       {categories.length === 0 ? (
         <View className="rounded-2xl border border-amber-200 bg-amber-50 p-4">
-          <Text className="text-sm leading-5 text-amber-900">
-            Belum ada kategori. Minta super admin membuat kategori di website agar laporan bisa dikirim.
+          <Text className="text-xs leading-relaxed text-amber-900 font-normal">
+            Belum ada kategori yang tersedia di sistem. Hubungi administrator portal web.
           </Text>
         </View>
       ) : (
-        <>
-          {/* ─── Judul ────────────────────────────────────────────── */}
-          <View className="mb-3 rounded-3xl border border-white/90 bg-white/95 p-4 shadow-clay-sm">
-            <Text className="mb-2 text-xs font-bold uppercase tracking-widest text-inkMuted">
-              Judul Laporan
-            </Text>
+        <View className="space-y-3.5">
+          {/* Judul Laporan */}
+          <View className="rounded-2xl border border-slate-200/90 bg-white/95 p-4 shadow-xs space-y-1.5">
+            <Text className="text-xs font-medium text-slate-700">Judul Pengaduan</Text>
             <TextInput
-              className="rounded-xl border border-stone-200 bg-cream-100 px-4 py-3 text-base text-ink"
+              className="rounded-xl border border-slate-200 bg-slate-50/50 px-3.5 py-2.5 text-xs text-slate-800 font-normal"
               value={header}
               onChangeText={setHeader}
-              placeholder="Ringkas, jelas, dan spesifik"
-              placeholderTextColor="#a8a29e"
+              placeholder="Contoh: Lampu penerangan jalan padam di Jl. Merdeka"
+              placeholderTextColor="#94A3B8"
               maxLength={255}
             />
           </View>
 
-          {/* ─── Isi laporan ─────────────────────────────────────── */}
-          <View className="mb-3 rounded-3xl border border-white/90 bg-white/95 p-4 shadow-clay-sm">
-            <Text className="mb-2 text-xs font-bold uppercase tracking-widest text-inkMuted">
-              Isi Laporan
-            </Text>
+          {/* Isi Laporan */}
+          <View className="rounded-2xl border border-slate-200/90 bg-white/95 p-4 shadow-xs space-y-1.5">
+            <Text className="text-xs font-medium text-slate-700">Kronologi & Uraian Lengkap</Text>
             <TextInput
-              className="min-h-[110px] rounded-xl border border-stone-200 bg-cream-100 px-4 py-3 text-base text-ink"
+              className="min-h-[110px] rounded-xl border border-slate-200 bg-slate-50/50 px-3.5 py-2.5 text-xs text-slate-800 font-normal leading-relaxed"
               value={body}
               onChangeText={setBody}
-              placeholder="Detail: lokasi, waktu, kronologi kejadian..."
-              placeholderTextColor="#a8a29e"
+              placeholder="Jelaskan detail: patokan jalan, estimasi durasi kendala, dampak bagi warga sekitar..."
+              placeholderTextColor="#94A3B8"
               multiline
               textAlignVertical="top"
             />
           </View>
 
-          {/* ─── Kategori ─────────────────────────────────────────── */}
-          <View className="mb-3 rounded-3xl border border-white/90 bg-white/95 p-4 shadow-clay-sm">
-            <Text className="mb-2 text-xs font-bold uppercase tracking-widest text-inkMuted">
-              Kategori
-            </Text>
+          {/* Kategori */}
+          <View className="rounded-2xl border border-slate-200/90 bg-white/95 p-4 shadow-xs space-y-2">
+            <View className="flex-row items-center gap-1.5">
+              <Tag size={13} color="#10B981" />
+              <Text className="text-xs font-medium text-slate-700">Pilih Kategori</Text>
+            </View>
             <ScrollView
               horizontal
               nestedScrollEnabled
@@ -280,14 +307,16 @@ export default function NewReportScreen() {
                   <Pressable
                     key={c.id}
                     onPress={() => setCategoryId(String(c.id))}
-                    className={`rounded-full px-4 py-2.5 ${
+                    className={`rounded-full px-3.5 py-1.5 ${
                       active
-                        ? 'border-2 border-peach-500 bg-cream-200'
-                        : 'border border-stone-200 bg-stone-50'
+                        ? 'border border-emerald-500 bg-emerald-50'
+                        : 'border border-slate-200 bg-white active:bg-slate-50'
                     }`}
                   >
                     <Text
-                      className={`text-sm font-semibold ${active ? 'text-ink' : 'text-stone-500'}`}
+                      className={`text-xs ${
+                        active ? 'font-medium text-emerald-800' : 'font-normal text-slate-600'
+                      }`}
                     >
                       {c.category_name}
                     </Text>
@@ -297,44 +326,39 @@ export default function NewReportScreen() {
             </ScrollView>
           </View>
 
-          {/* ─── Lokasi ───────────────────────────────────────────── */}
-          <View className="mb-3 rounded-3xl border border-white/90 bg-white/95 p-4 shadow-clay-sm">
-            <Text className="mb-2 text-xs font-bold uppercase tracking-widest text-inkMuted">
-              Lokasi (Opsional)
-            </Text>
+          {/* Lokasi Peta & GPS */}
+          <View className="rounded-2xl border border-slate-200/90 bg-white/95 p-4 shadow-xs">
             <LocationSelector onLocationSelected={handleLocationSelected} />
           </View>
 
-          {/* ─── Foto ─────────────────────────────────────────────── */}
-          <View className="mb-5 rounded-3xl border border-white/90 bg-white/95 p-4 shadow-clay-sm">
-            <Text className="mb-1 text-xs font-bold uppercase tracking-widest text-inkMuted">
-              Foto Bukti (Opsional)
-            </Text>
-            <Text className="mb-3 text-[12px] text-stone-400">
-              Maks. {MAX_IMAGES} foto · JPG, PNG, GIF · Maks. 5 MB per foto
-            </Text>
+          {/* Foto Bukti */}
+          <View className="rounded-2xl border border-slate-200/90 bg-white/95 p-4 shadow-xs space-y-2">
+            <View className="flex-row items-center justify-between">
+              <View className="flex-row items-center gap-1.5">
+                <ImageIcon size={13} color="#10B981" />
+                <Text className="text-xs font-medium text-slate-700">Foto Bukti Lampiran</Text>
+              </View>
+              <Text className="text-[11px] text-slate-400 font-normal">
+                {pickedImages.length}/{MAX_IMAGES} foto
+              </Text>
+            </View>
 
-            {/* Grid thumbnail foto */}
+            {/* Thumbnail preview */}
             {pickedImages.length > 0 && (
-              <View className="mb-3 flex-row flex-wrap gap-2">
+              <View className="flex-row flex-wrap gap-2 pt-1">
                 {pickedImages.map((img, idx) => (
                   <View key={idx} className="relative">
                     <Image
                       source={{ uri: img.uri }}
-                      className="h-24 w-24 rounded-2xl bg-stone-100"
+                      className="h-20 w-20 rounded-xl bg-slate-100 border border-slate-200"
                       resizeMode="cover"
                     />
-                    {/* Tombol hapus */}
                     <Pressable
                       onPress={() => removeImage(idx)}
-                      className="absolute right-1 top-1 h-6 w-6 items-center justify-center rounded-full bg-rose-500"
+                      className="absolute -right-1 -top-1 h-5 w-5 items-center justify-center rounded-full bg-rose-600 shadow-xs"
                     >
-                      <Text className="text-[11px] font-bold text-white">✕</Text>
+                      <X size={11} color="#ffffff" />
                     </Pressable>
-                    {/* Nomor urut */}
-                    <View className="absolute bottom-1 left-1 rounded-full bg-black/40 px-1.5 py-0.5">
-                      <Text className="text-[10px] font-bold text-white">{idx + 1}</Text>
-                    </View>
                   </View>
                 ))}
               </View>
@@ -343,40 +367,47 @@ export default function NewReportScreen() {
             {pickedImages.length < MAX_IMAGES ? (
               <Pressable
                 onPress={pickFromLibrary}
-                className="flex-row items-center gap-2 self-start rounded-2xl border border-dashed border-stone-300 bg-cream-100 px-4 py-3"
+                className="mt-1 flex-row items-center gap-2.5 rounded-xl border border-dashed border-slate-300 bg-slate-50/60 p-3 active:bg-slate-100"
               >
-                <Text className="text-xl text-stone-400">📷</Text>
+                <View className="h-8 w-8 items-center justify-center rounded-lg bg-emerald-50 border border-emerald-100">
+                  <Camera size={16} color="#059669" />
+                </View>
                 <View>
-                  <Text className="font-bold text-ink">
-                    {pickedImages.length === 0 ? 'Pilih foto' : 'Tambah foto'}
+                  <Text className="text-xs font-medium text-slate-800">
+                    {pickedImages.length === 0 ? 'Lampirkan Foto Bukti' : 'Tambah Foto Lain'}
                   </Text>
-                  <Text className="text-[11px] text-stone-400">
-                    {pickedImages.length}/{MAX_IMAGES} terpilih
+                  <Text className="text-[10px] text-slate-400 font-normal">
+                    Format JPG, PNG, GIF (Maks. 5 MB/foto)
                   </Text>
                 </View>
               </Pressable>
             ) : (
-              <View className="rounded-xl bg-green-50 px-3 py-2">
-                <Text className="text-xs font-semibold text-green-700">
-                  ✓ {MAX_IMAGES} foto sudah dipilih (batas maksimal)
+              <View className="rounded-xl border border-emerald-200 bg-emerald-50 px-3 py-2">
+                <Text className="text-xs font-medium text-emerald-800">
+                  ✓ Kapasitas {MAX_IMAGES} foto lampiran telah terpenuhi
                 </Text>
               </View>
             )}
           </View>
 
-          {/* ─── Tombol kirim ─────────────────────────────────────── */}
+          {/* Submit Button */}
           <Pressable
             onPress={onSubmit}
             disabled={!canSubmit}
-            className={`rounded-3xl bg-peach-500 py-4 shadow-clay ${!canSubmit ? 'opacity-50' : ''}`}
+            className={`mt-2 flex-row items-center justify-center gap-2 rounded-xl bg-emerald-600 py-3.5 shadow-xs active:bg-emerald-700 ${
+              !canSubmit ? 'opacity-50' : ''
+            }`}
           >
             {loading ? (
-              <ActivityIndicator color="#fff" />
+              <ActivityIndicator color="#ffffff" size="small" />
             ) : (
-              <Text className="text-center text-base font-bold text-white">🚀 Kirim Laporan</Text>
+              <>
+                <Send size={14} color="#ffffff" />
+                <Text className="text-xs font-medium text-white">Kirim Laporan Pengaduan</Text>
+              </>
             )}
           </Pressable>
-        </>
+        </View>
       )}
     </ScrollView>
   );

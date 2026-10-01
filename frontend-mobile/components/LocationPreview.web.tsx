@@ -16,28 +16,28 @@ export default function LocationPreview({ latitude, longitude, address }: Locati
   };
 
   return (
-    <View className="mt-4 gap-2">
+    <View className="space-y-2.5">
       <View className="flex-row items-center gap-1.5">
-        <MapPin size={16} color="#6FCF97" />
-        <Text className="text-sm font-semibold text-ink">Lokasi Kejadian di Peta</Text>
+        <MapPin size={14} color="#10B981" />
+        <Text className="text-xs font-medium text-slate-700">Titik Lokasi Kejadian</Text>
       </View>
 
-      <Pressable onPress={openMap} className="overflow-hidden rounded-[20px] border border-stone-200">
+      <Pressable onPress={openMap} className="overflow-hidden rounded-2xl border border-slate-200">
         <Image
           source={{ uri: mapUrl }}
-          style={{ width: '100%', height: 180 }}
+          style={{ width: '100%', height: 160 }}
           resizeMode="cover"
         />
       </Pressable>
 
-      <Text className="text-[11px] text-inkMuted">
+      <Text className="text-[11px] text-slate-400 font-mono">
         Koordinat: {latitude.toFixed(6)}, {longitude.toFixed(6)}
       </Text>
 
       {address ? (
-        <View className="rounded-2xl border border-stone-200 bg-stone-50/50 p-3">
-          <Text className="text-xs font-bold text-ink">Alamat Kejadian:</Text>
-          <Text className="text-[12px] text-inkMuted leading-[17px] mt-0.5">{address}</Text>
+        <View className="rounded-xl border border-slate-200 bg-slate-50/60 p-3 space-y-1">
+          <Text className="text-[11px] font-medium text-slate-700">Alamat Kejadian:</Text>
+          <Text className="text-[11px] text-slate-500 font-normal leading-relaxed">{address}</Text>
         </View>
       ) : null}
     </View>

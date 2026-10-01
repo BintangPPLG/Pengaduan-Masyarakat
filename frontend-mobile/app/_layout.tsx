@@ -17,7 +17,7 @@ function RootStack() {
       screenOptions={{
         headerStyle: { backgroundColor: colors.headerBar },
         headerTintColor: colors.ink,
-        headerTitleStyle: { fontWeight: '700' },
+        headerTitleStyle: { fontWeight: '600' },
         headerShadowVisible: false,
       }}
     >

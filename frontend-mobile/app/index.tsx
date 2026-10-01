@@ -3,6 +3,15 @@ import { Link, useRouter } from 'expo-router';
 import { useEffect } from 'react';
 import { Pressable, ScrollView, Text, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import {
+  ShieldCheck,
+  ArrowRight,
+  Send,
+  MapPin,
+  MessageSquare,
+  CheckCircle2,
+  Sparkles,
+} from 'lucide-react-native';
 
 export default function LandingScreen() {
   const insets = useSafeAreaInsets();
@@ -17,29 +26,36 @@ export default function LandingScreen() {
   }, [ready, token, user, router]);
 
   return (
-    <View className="flex-1 bg-cream-100" style={{ paddingTop: insets.top }}>
-      <View className="absolute right-0 top-24 h-56 w-56 rounded-full bg-peach-300 opacity-40" />
-      <View className="absolute -left-10 top-80 h-44 w-44 rounded-full bg-peach-400 opacity-30" />
+    <View className="flex-1 bg-[#F8FAFC]" style={{ paddingTop: insets.top }}>
+      {/* Background ambient lighting */}
+      <View className="absolute -right-20 -top-10 h-64 w-64 rounded-full bg-emerald-300/15" />
+      <View className="absolute -left-20 top-72 h-56 w-56 rounded-full bg-teal-200/15" />
 
-      <View className="z-10 flex-row items-center justify-between border-b border-peach-300/40 bg-white/85 px-4 py-3">
+      {/* Header Bar */}
+      <View className="z-10 flex-row items-center justify-between border-b border-slate-200/60 bg-white/80 px-5 py-3">
         <View className="flex-row items-center gap-2.5">
-          <View className="h-10 w-10 items-center justify-center rounded-2xl bg-peach-500 shadow-clay-sm">
-            <Text className="text-base font-black text-white">S</Text>
+          <View className="h-8 w-8 items-center justify-center rounded-xl bg-emerald-600 shadow-xs">
+            <ShieldCheck size={16} color="#ffffff" />
           </View>
           <View>
-            <Text className="text-[15px] font-extrabold text-ink">SuaraWarga</Text>
-            <Text className="text-[11px] text-inkMuted">Aspirasi digital masyarakat</Text>
+            <Text className="text-sm font-semibold tracking-tight text-slate-900">
+              SuaraWarga
+            </Text>
+            <Text className="text-[10px] text-slate-400 font-normal">
+              Aspirasi digital masyarakat
+            </Text>
           </View>
         </View>
-        <View className="flex-row gap-2">
+
+        <View className="flex-row items-center gap-2">
           <Link href="/login" asChild>
-            <Pressable className="rounded-2xl border border-stone-200 bg-white px-3.5 py-2.5">
-              <Text className="text-sm font-semibold text-stone-600">Masuk</Text>
+            <Pressable className="rounded-full border border-slate-200 bg-white px-3 py-1.5 active:bg-slate-50">
+              <Text className="text-xs font-medium text-slate-600">Masuk</Text>
             </Pressable>
           </Link>
           <Link href="/register" asChild>
-            <Pressable className="rounded-2xl bg-peach-500 px-3.5 py-2.5 shadow-clay-sm">
-              <Text className="text-sm font-bold text-white">Daftar</Text>
+            <Pressable className="rounded-full bg-emerald-600 px-3.5 py-1.5 shadow-xs active:bg-emerald-700">
+              <Text className="text-xs font-medium text-white">Daftar</Text>
             </Pressable>
           </Link>
         </View>
@@ -49,88 +65,114 @@ export default function LandingScreen() {
         className="z-10 flex-1"
         contentContainerStyle={{
           paddingHorizontal: 16,
-          paddingTop: 18,
-          paddingBottom: insets.bottom + 20,
-          gap: 12,
+          paddingTop: 16,
+          paddingBottom: insets.bottom + 28,
+          gap: 14,
         }}
         showsVerticalScrollIndicator={false}
       >
-        <View className="rounded-[26px] border border-white/90 bg-white/95 p-5 shadow-clay">
-          <View className="mb-3 self-start rounded-full border border-peach-300/50 bg-cream-200 px-3 py-1.5">
-            <Text className="text-[10px] font-extrabold uppercase tracking-wide text-stone-700">
-              Platform resmi masyarakat
+        {/* Hero Card */}
+        <View className="rounded-[28px] border border-slate-200/90 bg-white/95 p-6 shadow-xs">
+          <View className="mb-3.5 flex-row items-center gap-1.5 self-start rounded-full border border-emerald-200 bg-emerald-50 px-3 py-1">
+            <View className="h-1.5 w-1.5 rounded-full bg-emerald-500" />
+            <Text className="text-[11px] font-medium text-emerald-800">
+              Platform Pengaduan Publik
             </Text>
           </View>
-          <Text className="text-2xl font-extrabold leading-8 text-ink">
-            Tempat aman untuk menyampaikan{' '}
-            <Text className="text-peach-600">keluhan & aspirasi warga</Text>
+
+          <Text className="text-2xl font-semibold tracking-tight text-slate-900 leading-snug">
+            Sampaikan Aspirasi & Keluhan Lingkungan Secara Transparan
           </Text>
-          <Text className="mt-3 text-[15px] leading-[22px] text-inkMuted">
-            Laporkan jalan rusak, lampu mati, saluran, atau layanan publik — lengkap dengan foto. Satu
-            sistem dengan admin di website.
+
+          <Text className="mt-2.5 text-xs leading-relaxed text-slate-500 font-normal">
+            Laporkan jalan rusak, lampu mati, saluran mampet, atau layanan fasilitas umum lengkap dengan koordinat peta dan foto bukti. Terintegrasi langsung dengan tim verifikasi web.
           </Text>
-          <View className="mt-5 gap-2.5">
+
+          <View className="mt-6 gap-2.5">
             <Link href="/register" asChild>
-              <Pressable className="rounded-3xl bg-peach-500 py-3.5 shadow-clay">
-                <Text className="text-center text-[15px] font-bold text-white">Mulai lapor sekarang</Text>
+              <Pressable className="flex-row items-center justify-center gap-2 rounded-xl bg-emerald-600 py-3.5 shadow-xs active:bg-emerald-700">
+                <Text className="text-sm font-medium text-white">Mulai Buat Pengaduan</Text>
+                <ArrowRight size={14} color="#ffffff" />
               </Pressable>
             </Link>
             <Link href="/login" asChild>
-              <Pressable className="rounded-3xl border border-stone-200 bg-white py-3.5">
-                <Text className="text-center text-[15px] font-semibold text-stone-600">
-                  Masuk ke akun
+              <Pressable className="rounded-xl border border-slate-200 bg-white py-3.5 active:bg-slate-50">
+                <Text className="text-center text-sm font-medium text-slate-700">
+                  Masuk ke Akun Warga
                 </Text>
               </Pressable>
             </Link>
           </View>
         </View>
 
-        <View className="rounded-3xl border border-white/90 bg-white/95 p-4 shadow-clay-sm">
-          <Text className="mb-2 text-[15px] font-bold text-ink">Kenapa platform ini dibuat?</Text>
-          <Text className="text-sm leading-[21px] text-inkMuted">
-            Agar suara warga tidak hilang: laporan rapi, bisa dilampiri foto, dan mudah dipantau bersama
-            tim tindak lanjut.
+        {/* Section Title */}
+        <View className="px-1 pt-1">
+          <Text className="text-sm font-semibold tracking-tight text-slate-900">
+            Fitur Unggulan Mobile
+          </Text>
+          <Text className="text-[11px] text-slate-500 font-normal">
+            Dirancang praktis untuk kemudahan pelaporan di genggaman
           </Text>
         </View>
 
-        <Feature
-          title="Aspirasi tersalurkan"
-          description="Setiap laporan membantu menyuarakan kebutuhan nyata di lingkungan sekitar."
-        />
-        <Feature
-          title="Informasi lebih jelas"
-          description="Format laporan rapi sehingga masalah di lapangan lebih mudah dipahami."
-        />
-        <Feature
-          title="Ruang diskusi"
-          description="Lengkapi informasi lewat komentar secara santun dan transparan."
-        />
-        <Feature
-          title="Perubahan nyata"
-          description="Dokumentasi yang baik meningkatkan peluang masalah ditangani."
+        {/* Feature Cards */}
+        <FeatureItem
+          icon={<Send size={16} color="#059669" />}
+          iconBg="bg-emerald-50 border-emerald-100"
+          title="Penyaluran Aspirasi Cepat"
+          description="Laporan Anda tersimpan rapi dan langsung masuk ke dashboard verifikasi petugas secara realtime."
         />
 
-        <View className="mt-2 rounded-[22px] border border-peach-500/20 bg-stone-800 p-6 shadow-clay">
-          <Text className="text-lg font-black text-white">SuaraWarga</Text>
-          <Text className="mt-2.5 text-[13px] leading-5 text-stone-300">
-            Wadah digital untuk keluhan, saran, dan harapan warga — selaras dengan tampilan website.
+        <FeatureItem
+          icon={<MapPin size={16} color="#0D9488" />}
+          iconBg="bg-teal-50 border-teal-100"
+          title="Presisi Lokasi & GPS"
+          description="Sematkan koordinat lokasi akurat dari peta interaktif agar petugas mudah menemukan titik kejadian."
+        />
+
+        <FeatureItem
+          icon={<MessageSquare size={16} color="#0284C7" />}
+          iconBg="bg-sky-50 border-sky-100"
+          title="Diskusi Interaktif Terbuka"
+          description="Berikan keterangan tambahan atau tanggapi pembaruan status laporan secara transparan bersama warga lain."
+        />
+
+        <FeatureItem
+          icon={<CheckCircle2 size={16} color="#16A34A" />}
+          iconBg="bg-green-50 border-green-100"
+          title="Status Pemantauan Jelas"
+          description="Pantau tahapan laporan Anda mulai dari menunggu review, disetujui, hingga tindak lanjut selesai."
+        />
+
+        {/* Modern Dark Footer Card */}
+        <View className="mt-2 rounded-[24px] border border-slate-800 bg-slate-900 p-5 shadow-xs">
+          <View className="flex-row items-center gap-2">
+            <View className="h-6 w-6 items-center justify-center rounded-lg bg-emerald-500">
+              <ShieldCheck size={14} color="#0F172A" />
+            </View>
+            <Text className="text-sm font-semibold text-white tracking-tight">SuaraWarga</Text>
+          </View>
+
+          <Text className="mt-2 text-xs leading-relaxed text-slate-400 font-normal">
+            Platform pengaduan masyarakat modern untuk transparansi pelayanan lingkungan sekitar.
           </Text>
-          <View className="mt-4 flex-row flex-wrap items-center">
+
+          <View className="mt-4 flex-row items-center gap-3 border-t border-slate-800/80 pt-3">
             <Link href="/login" asChild>
               <Pressable>
-                <Text className="text-sm font-bold text-peach-300">Masuk</Text>
+                <Text className="text-xs font-medium text-emerald-400">Masuk Akun</Text>
               </Pressable>
             </Link>
-            <Text className="text-sm text-stone-500"> · </Text>
+            <Text className="text-xs text-slate-600">·</Text>
             <Link href="/register" asChild>
               <Pressable>
-                <Text className="text-sm font-bold text-peach-300">Daftar</Text>
+                <Text className="text-xs font-medium text-emerald-400">Pendaftaran</Text>
               </Pressable>
             </Link>
           </View>
-          <Text className="mt-3 text-xs text-stone-400">info@suarawarga.local</Text>
-          <Text className="mt-3 text-[11px] text-stone-500">
-            © {new Date().getFullYear()} SuaraWarga · untuk warga
+
+          <Text className="mt-3 text-[10px] text-slate-500 font-normal">
+            © {new Date().getFullYear()} SuaraWarga · Selaras dengan Desain Web
           </Text>
         </View>
       </ScrollView>
@@ -138,12 +180,30 @@ export default function LandingScreen() {
   );
 }
 
-function Feature({ title, description }: { title: string; description: string }) {
+function FeatureItem({
+  icon,
+  iconBg,
+  title,
+  description,
+}: {
+  icon: React.ReactNode;
+  iconBg: string;
+  title: string;
+  description: string;
+}) {
   return (
-    <View className="overflow-hidden rounded-3xl border border-white/90 bg-white/95 p-4 shadow-clay-sm">
-      <View className="absolute -right-5 -top-5 h-20 w-20 rounded-full bg-peach-300 opacity-25" />
-      <Text className="text-[15px] font-bold text-ink">{title}</Text>
-      <Text className="mt-1.5 text-[13px] leading-5 text-inkMuted">{description}</Text>
+    <View className="rounded-2xl border border-slate-200/80 bg-white p-4 shadow-xs">
+      <View className="flex-row items-start gap-3">
+        <View className={`h-8 w-8 items-center justify-center rounded-xl border ${iconBg}`}>
+          {icon}
+        </View>
+        <View className="flex-1">
+          <Text className="text-xs font-semibold text-slate-800 tracking-tight">{title}</Text>
+          <Text className="mt-1 text-[11px] leading-relaxed text-slate-500 font-normal">
+            {description}
+          </Text>
+        </View>
+      </View>
     </View>
   );
 }

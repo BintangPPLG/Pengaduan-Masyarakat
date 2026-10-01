@@ -7,7 +7,7 @@ import {
   ActivityIndicator,
   Alert,
 } from 'react-native';
-import { MessageSquare } from 'lucide-react-native';
+import { MessageSquare, Send, Reply, Edit2, Trash2 } from 'lucide-react-native';
 import type { Comment } from '@/lib/api/types';
 import {
   createComment,
@@ -74,7 +74,7 @@ function SingleComment({ comment, reportId, depth = 0, onRefresh }: SingleCommen
   };
 
   const handleDelete = () => {
-    Alert.alert('Hapus komentar', 'Yakin hapus komentar ini?', [
+    Alert.alert('Hapus tanggapan', 'Apakah Anda yakin ingin menghapus tanggapan ini?', [
       { text: 'Batal', style: 'cancel' },
       {
         text: 'Hapus',
@@ -93,27 +93,52 @@ function SingleComment({ comment, reportId, depth = 0, onRefresh }: SingleCommen
   };
 
   return (
-    <View className={`rounded-2xl border border-stone-200 bg-white p-3 ${depth > 0 ? 'ml-4 mt-2' : 'mb-2'}`}>
+    <View
+      className={`rounded-2xl border border-slate-200/90 bg-white p-3.5 ${
+        depth > 0 ? 'ml-3 mt-2 border-l-2 border-l-emerald-500 bg-slate-50/50' : 'mb-2.5 shadow-xs'
+      }`}
+    >
       <View className="flex-row items-start justify-between gap-2">
         <View className="min-w-0 flex-1">
-          <Text className="text-sm font-bold text-ink">{comment.username}</Text>
-          <Text className="text-[10px] text-inkMuted">{formatDate(comment.created_at)}</Text>
+          <View className="flex-row items-center gap-1.5">
+            <View className="h-4 w-4 items-center justify-center rounded-full bg-emerald-100">
+              <Text className="text-[9px] font-semibold text-emerald-800">
+                {comment.username.charAt(0).toUpperCase()}
+              </Text>
+            </View>
+            <Text className="text-xs font-semibold text-slate-800 tracking-tight">
+              {comment.username}
+            </Text>
+          </View>
+          <Text className="mt-0.5 text-[10px] text-slate-400 font-normal">
+            {formatDate(comment.created_at)}
+          </Text>
         </View>
+
         {user ? (
-          <View className="flex-row gap-2">
+          <View className="flex-row items-center gap-2.5">
             {depth < 3 ? (
-              <Pressable onPress={() => setShowReply((v) => !v)}>
-                <Text className="text-[11px] font-bold text-peach-600">Balas</Text>
+              <Pressable
+                onPress={() => setShowReply((v) => !v)}
+                className="flex-row items-center gap-1 py-0.5"
+              >
+                <Text className="text-[11px] font-medium text-emerald-700">Balas</Text>
               </Pressable>
             ) : null}
             {isOwn ? (
-              <Pressable onPress={() => { setEditMode((v) => !v); setEditText(comment.comment); }}>
-                <Text className="text-[11px] font-bold text-stone-500">Edit</Text>
+              <Pressable
+                onPress={() => {
+                  setEditMode((v) => !v);
+                  setEditText(comment.comment);
+                }}
+                className="py-0.5"
+              >
+                <Text className="text-[11px] font-medium text-slate-500">Edit</Text>
               </Pressable>
             ) : null}
             {isOwn ? (
-              <Pressable onPress={handleDelete}>
-                <Text className="text-[11px] font-bold text-rose-600">Hapus</Text>
+              <Pressable onPress={handleDelete} className="py-0.5">
+                <Text className="text-[11px] font-medium text-rose-600">Hapus</Text>
               </Pressable>
             ) : null}
           </View>
@@ -121,45 +146,63 @@ function SingleComment({ comment, reportId, depth = 0, onRefresh }: SingleCommen
       </View>
 
       {editMode ? (
-        <View className="mt-2 gap-2">
+        <View className="mt-2.5 gap-2">
           <TextInput
-            className="min-h-[60px] rounded-xl border border-stone-200 bg-white px-3 py-2 text-sm text-ink"
+            className="min-h-[56px] rounded-xl border border-slate-200 bg-white px-3 py-2 text-xs text-slate-800 font-normal leading-relaxed"
             value={editText}
             onChangeText={setEditText}
             multiline
           />
           <View className="flex-row gap-2">
-            <Pressable onPress={handleEdit} disabled={busy} className="rounded-xl bg-peach-500 px-3 py-2">
-              <Text className="text-xs font-bold text-white">Simpan</Text>
+            <Pressable
+              onPress={handleEdit}
+              disabled={busy}
+              className="rounded-lg bg-emerald-600 px-3 py-1.5 active:bg-emerald-700"
+            >
+              <Text className="text-xs font-medium text-white">Simpan</Text>
             </Pressable>
-            <Pressable onPress={() => setEditMode(false)} className="rounded-xl border border-stone-200 px-3 py-2">
-              <Text className="text-xs font-bold text-stone-600">Batal</Text>
+            <Pressable
+              onPress={() => setEditMode(false)}
+              className="rounded-lg border border-slate-200 bg-white px-3 py-1.5"
+            >
+              <Text className="text-xs font-medium text-slate-600">Batal</Text>
             </Pressable>
           </View>
         </View>
       ) : (
-        <Text className="mt-2 text-sm leading-5 text-stone-600">{comment.comment}</Text>
+        <Text className="mt-2 text-xs leading-relaxed text-slate-600 font-normal">
+          {comment.comment}
+        </Text>
       )}
 
       {showReply ? (
-        <View className="mt-2 gap-2">
+        <View className="mt-2.5 gap-2 border-t border-slate-100 pt-2.5">
           <TextInput
-            className="min-h-[60px] rounded-xl border border-peach-200 bg-white px-3 py-2 text-sm text-ink"
+            className="min-h-[56px] rounded-xl border border-emerald-200 bg-emerald-50/30 px-3 py-2 text-xs text-slate-800 font-normal leading-relaxed"
             value={replyText}
             onChangeText={setReplyText}
-            placeholder={`Balas ${comment.username}...`}
+            placeholder={`Tulis balasan untuk ${comment.username}...`}
+            placeholderTextColor="#94A3B8"
             multiline
           />
           <View className="flex-row gap-2">
             <Pressable
               onPress={handleReply}
               disabled={busy || !replyText.trim()}
-              className={`rounded-xl bg-peach-500 px-3 py-2 ${busy || !replyText.trim() ? 'opacity-60' : ''}`}
+              className={`rounded-lg bg-emerald-600 px-3 py-1.5 active:bg-emerald-700 ${
+                busy || !replyText.trim() ? 'opacity-60' : ''
+              }`}
             >
-              <Text className="text-xs font-bold text-white">Kirim</Text>
+              <Text className="text-xs font-medium text-white">Kirim Balasan</Text>
             </Pressable>
-            <Pressable onPress={() => { setShowReply(false); setReplyText(''); }} className="rounded-xl border border-stone-200 px-3 py-2">
-              <Text className="text-xs font-bold text-stone-600">Batal</Text>
+            <Pressable
+              onPress={() => {
+                setShowReply(false);
+                setReplyText('');
+              }}
+              className="rounded-lg border border-slate-200 bg-white px-3 py-1.5"
+            >
+              <Text className="text-xs font-medium text-slate-600">Batal</Text>
             </Pressable>
           </View>
         </View>
@@ -207,51 +250,64 @@ export default function CommentThread({ reportId, comments, onRefresh }: Props) 
   };
 
   return (
-    <View className="rounded-3xl border border-white/90 bg-white/95 p-4 shadow-clay-sm">
-      <View className="mb-3 flex-row items-center gap-2">
-        <MessageSquare size={18} color="#56B97E" />
-        <Text className="text-lg font-extrabold text-ink">Diskusi</Text>
+    <View className="rounded-[28px] border border-slate-200/90 bg-white/95 p-5 shadow-xs space-y-3">
+      <View className="flex-row items-center justify-between pb-2 border-b border-slate-100">
+        <View className="flex-row items-center gap-2">
+          <MessageSquare size={16} color="#10B981" />
+          <Text className="text-sm font-semibold tracking-tight text-slate-900">
+            Diskusi & Tanggapan
+          </Text>
+        </View>
+
         {comments.length > 0 ? (
-          <View className="rounded-full bg-cream-200 px-2 py-0.5">
-            <Text className="text-xs font-bold text-peach-600">{comments.length}</Text>
+          <View className="rounded-full bg-slate-100 px-2 py-0.5">
+            <Text className="text-[11px] font-medium text-slate-600">{comments.length} komentar</Text>
           </View>
         ) : null}
       </View>
 
       {comments.length === 0 ? (
-        <Text className="py-4 text-center text-sm text-inkMuted italic">
-          Belum ada komentar. Jadilah yang pertama!
+        <Text className="py-4 text-center text-xs text-slate-400 font-normal italic">
+          Belum ada tanggapan untuk laporan ini. Berikan tanggapan pertama Anda!
         </Text>
       ) : (
-        comments.map((c) => (
-          <SingleComment key={c.id} comment={c} reportId={reportId} onRefresh={onRefresh} />
-        ))
+        <View className="pt-1">
+          {comments.map((c) => (
+            <SingleComment key={c.id} comment={c} reportId={reportId} onRefresh={onRefresh} />
+          ))}
+        </View>
       )}
 
       {user ? (
-        <View className="mt-4 gap-2 border-t border-stone-100 pt-4">
+        <View className="mt-3 gap-2 border-t border-slate-100 pt-3">
           {error ? (
-            <View className="rounded-xl border border-rose-200 bg-rose-50 p-2">
-              <Text className="text-sm text-rose-800">{error}</Text>
+            <View className="rounded-xl border border-rose-200 bg-rose-50 p-2.5">
+              <Text className="text-xs font-medium text-rose-800">{error}</Text>
             </View>
           ) : null}
           <TextInput
-            className="min-h-[88px] rounded-2xl border border-stone-200 bg-white px-3.5 py-3 text-base text-ink"
+            className="min-h-[76px] rounded-xl border border-slate-200 bg-slate-50/50 px-3.5 py-2.5 text-xs text-slate-800 font-normal leading-relaxed"
             value={text}
             onChangeText={setText}
-            placeholder="Tulis tanggapan atau informasi tambahan..."
+            placeholder="Tuliskan saran, klarifikasi, atau informasi tambahan..."
+            placeholderTextColor="#94A3B8"
             multiline
             textAlignVertical="top"
           />
           <Pressable
             onPress={handleSubmit}
             disabled={submitting || !text.trim()}
-            className={`rounded-3xl bg-peach-500 py-3 ${submitting || !text.trim() ? 'opacity-60' : ''}`}
+            className={`flex-row items-center justify-center gap-1.5 rounded-xl bg-emerald-600 py-2.5 shadow-xs active:bg-emerald-700 ${
+              submitting || !text.trim() ? 'opacity-60' : ''
+            }`}
           >
             {submitting ? (
-              <ActivityIndicator color="#fff" />
+              <ActivityIndicator color="#ffffff" size="small" />
             ) : (
-              <Text className="text-center text-[15px] font-bold text-white">Kirim Komentar</Text>
+              <>
+                <Send size={13} color="#ffffff" />
+                <Text className="text-xs font-medium text-white">Kirim Tanggapan</Text>
+              </>
             )}
           </Pressable>
         </View>

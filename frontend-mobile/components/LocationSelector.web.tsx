@@ -46,7 +46,7 @@ export default function LocationSelector({ onLocationSelected }: LocationSelecto
     try {
       const { status } = await Location.requestForegroundPermissionsAsync();
       if (status !== 'granted') {
-        alert('Izin lokasi ditolak. Izinkan akses lokasi di browser.');
+        alert('Izin lokasi ditolak. Harap izinkan akses lokasi pada browser Anda.');
         return;
       }
       const loc = await Location.getCurrentPositionAsync({
@@ -54,7 +54,7 @@ export default function LocationSelector({ onLocationSelected }: LocationSelecto
       });
       await applyCoords(loc.coords.latitude, loc.coords.longitude);
     } catch {
-      alert('Gagal mengambil lokasi GPS.');
+      alert('Gagal mendeteksi lokasi GPS.');
     } finally {
       setGpsLoading(false);
     }
@@ -64,53 +64,55 @@ export default function LocationSelector({ onLocationSelected }: LocationSelecto
     const lat = parseFloat(latText);
     const lng = parseFloat(lngText);
     if (Number.isNaN(lat) || Number.isNaN(lng)) {
-      alert('Koordinat tidak valid.');
+      alert('Format angka koordinat tidak valid.');
       return;
     }
     applyCoords(lat, lng);
   };
 
   return (
-    <View className="mt-3 gap-2.5">
+    <View className="space-y-2.5">
       <View className="flex-row items-center justify-between">
         <View className="flex-row items-center gap-1.5">
-          <MapPin size={16} color="#6FCF97" />
-          <Text className="text-sm font-semibold text-ink">Pilih Lokasi Kejadian</Text>
+          <MapPin size={14} color="#10B981" />
+          <Text className="text-xs font-medium text-slate-700">Pilih Lokasi Kejadian</Text>
         </View>
         <Pressable
           onPress={requestGPS}
           disabled={gpsLoading}
-          className="flex-row items-center gap-1.5 rounded-full bg-cream-100 border border-peach-300 px-3.5 py-1.5 active:opacity-75 disabled:opacity-50"
+          className="flex-row items-center gap-1.5 rounded-full border border-emerald-200 bg-emerald-50 px-2.5 py-1 active:bg-emerald-100 disabled:opacity-50"
         >
-          <Navigation size={12} color="#56B97E" />
-          <Text className="text-[11px] font-bold text-peach-600">
-            {gpsLoading ? 'Mendapatkan lokasi...' : 'GPS Saya'}
+          <Navigation size={11} color="#059669" />
+          <Text className="text-[10px] font-medium text-emerald-800">
+            {gpsLoading ? 'Mencari...' : 'Gunakan GPS'}
           </Text>
         </Pressable>
       </View>
 
-      <Text className="text-[12px] text-inkMuted">
-        Di browser, gunakan GPS atau masukkan koordinat secara manual.
+      <Text className="text-[11px] text-slate-400 font-normal">
+        Gunakan tombol GPS atau masukkan koordinat manual di bawah ini.
       </Text>
 
       <View className="flex-row gap-2">
         <View className="flex-1">
-          <Text className="mb-1 text-xs font-semibold text-ink">Latitude</Text>
+          <Text className="mb-1 text-[11px] font-medium text-slate-600">Latitude</Text>
           <TextInput
-            className="rounded-2xl border border-stone-200 bg-white px-3 py-2.5 text-sm text-ink"
+            className="rounded-xl border border-slate-200 bg-slate-50/50 px-3 py-2 text-xs text-slate-800 font-normal"
             value={latText}
             onChangeText={setLatText}
             placeholder="-6.200000"
+            placeholderTextColor="#94A3B8"
             keyboardType="numeric"
           />
         </View>
         <View className="flex-1">
-          <Text className="mb-1 text-xs font-semibold text-ink">Longitude</Text>
+          <Text className="mb-1 text-[11px] font-medium text-slate-600">Longitude</Text>
           <TextInput
-            className="rounded-2xl border border-stone-200 bg-white px-3 py-2.5 text-sm text-ink"
+            className="rounded-xl border border-slate-200 bg-slate-50/50 px-3 py-2 text-xs text-slate-800 font-normal"
             value={lngText}
             onChangeText={setLngText}
             placeholder="106.816600"
+            placeholderTextColor="#94A3B8"
             keyboardType="numeric"
           />
         </View>
@@ -118,18 +120,18 @@ export default function LocationSelector({ onLocationSelected }: LocationSelecto
 
       <Pressable
         onPress={applyManual}
-        className="self-start rounded-2xl bg-cream-200 px-4 py-2.5"
+        className="self-start rounded-lg border border-slate-200 bg-white px-3 py-1.5 active:bg-slate-50"
       >
-        <Text className="text-sm font-bold text-ink">Terapkan Koordinat</Text>
+        <Text className="text-xs font-medium text-slate-700">Terapkan Koordinat</Text>
       </Pressable>
 
       {address ? (
-        <View className="rounded-2xl border border-stone-200 bg-white p-3.5 gap-1.5">
-          <Text className="text-xs font-bold text-ink">Alamat:</Text>
+        <View className="rounded-xl border border-slate-200 bg-slate-50/60 p-3 space-y-1">
+          <Text className="text-[11px] font-medium text-slate-700">Alamat Terdeteksi:</Text>
           {loadingAddress ? (
-            <ActivityIndicator size="small" color="#56B97E" />
+            <ActivityIndicator size="small" color="#10B981" className="self-start mt-0.5" />
           ) : (
-            <Text className="text-[12px] text-inkMuted leading-[17px]">{address}</Text>
+            <Text className="text-[11px] text-slate-500 font-normal leading-relaxed">{address}</Text>
           )}
         </View>
       ) : null}

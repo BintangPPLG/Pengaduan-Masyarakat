@@ -66,7 +66,7 @@ export default function LocationSelector({ onLocationSelected }: LocationSelecto
     try {
       const { status } = await Location.requestForegroundPermissionsAsync();
       if (status !== 'granted') {
-        alert('Izin lokasi ditolak. Harap izinkan akses GPS di pengaturan handphone.');
+        alert('Izin lokasi ditolak. Harap berikan akses GPS pada pengaturan perangkat.');
         return;
       }
 
@@ -83,28 +83,28 @@ export default function LocationSelector({ onLocationSelected }: LocationSelecto
       setRegion({ ...coords, latitudeDelta: 0.009, longitudeDelta: 0.009 });
       fetchAddress(coords.latitude, coords.longitude);
     } catch {
-      alert('Gagal mengambil lokasi GPS. Coba lagi atau tap peta secara manual.');
+      alert('Gagal mendeteksi lokasi GPS. Anda dapat mengetuk peta langsung untuk memilih titik kejadian.');
     } finally {
       setGpsLoading(false);
     }
   };
 
   return (
-    <View className="mt-3 gap-2.5">
+    <View className="space-y-2.5">
       <View className="flex-row items-center justify-between">
         <View className="flex-row items-center gap-1.5">
-          <MapPin size={16} color="#6FCF97" />
-          <Text className="text-sm font-semibold text-ink">Pilih Lokasi Kejadian</Text>
+          <MapPin size={14} color="#10B981" />
+          <Text className="text-xs font-medium text-slate-700">Pilih Titik Lokasi di Peta</Text>
         </View>
 
         <Pressable
           onPress={requestGPS}
           disabled={gpsLoading}
-          className="flex-row items-center gap-1.5 rounded-full bg-cream-100 border border-peach-300 px-3.5 py-1.5 active:opacity-75 disabled:opacity-50"
+          className="flex-row items-center gap-1.5 rounded-full border border-emerald-200 bg-emerald-50 px-2.5 py-1 active:bg-emerald-100 disabled:opacity-50"
         >
-          <Navigation size={12} color="#56B97E" />
-          <Text className="text-[11px] font-bold text-peach-600">
-            {gpsLoading ? 'Mendapatkan lokasi...' : 'GPS Saya'}
+          <Navigation size={11} color="#059669" />
+          <Text className="text-[10px] font-medium text-emerald-800">
+            {gpsLoading ? 'Mencari...' : 'Gunakan GPS'}
           </Text>
         </Pressable>
       </View>
@@ -121,26 +121,28 @@ export default function LocationSelector({ onLocationSelected }: LocationSelecto
               coordinate={position}
               draggable
               onDragEnd={handleMarkerDragEnd}
-              pinColor="#6FCF97"
+              pinColor="#10B981"
             />
           )}
         </MapView>
       </View>
 
       {position && (
-        <View className="rounded-2xl border border-stone-200 bg-white p-3.5 gap-1.5">
+        <View className="rounded-xl border border-slate-200 bg-slate-50/60 p-3 space-y-1">
           <View className="flex-row items-center gap-1.5">
-            <Text className="text-xs font-bold text-ink">Koordinat:</Text>
-            <Text className="font-mono text-xs font-semibold text-peach-600">
+            <Text className="text-[11px] font-medium text-slate-700">Koordinat:</Text>
+            <Text className="font-mono text-[11px] font-medium text-emerald-700">
               {position.latitude.toFixed(6)}, {position.longitude.toFixed(6)}
             </Text>
           </View>
           <View>
-            <Text className="text-xs font-bold text-ink">Alamat:</Text>
+            <Text className="text-[11px] font-medium text-slate-700">Alamat Acuan:</Text>
             {loadingAddress ? (
-              <ActivityIndicator size="small" color="#56B97E" className="self-start mt-0.5" />
+              <ActivityIndicator size="small" color="#10B981" className="self-start mt-0.5" />
             ) : (
-              <Text className="text-[12px] text-inkMuted leading-[17px] mt-0.5">{address}</Text>
+              <Text className="text-[11px] text-slate-500 font-normal leading-relaxed mt-0.5">
+                {address}
+              </Text>
             )}
           </View>
         </View>
@@ -151,12 +153,12 @@ export default function LocationSelector({ onLocationSelected }: LocationSelecto
 
 const styles = StyleSheet.create({
   mapContainer: {
-    height: 220,
+    height: 200,
     width: '100%',
-    borderRadius: 20,
+    borderRadius: 16,
     overflow: 'hidden',
     borderWidth: 1,
-    borderColor: '#e7e5e4',
+    borderColor: '#E2E8F0',
   },
   map: {
     ...StyleSheet.absoluteFillObject,

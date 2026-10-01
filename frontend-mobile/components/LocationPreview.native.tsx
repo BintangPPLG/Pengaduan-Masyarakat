@@ -18,10 +18,10 @@ export default function LocationPreview({ latitude, longitude, address }: Locati
   };
 
   return (
-    <View className="mt-4 gap-2">
+    <View className="space-y-2.5">
       <View className="flex-row items-center gap-1.5">
-        <MapPin size={16} color="#6FCF97" />
-        <Text className="text-sm font-semibold text-ink">Lokasi Kejadian di Peta</Text>
+        <MapPin size={14} color="#10B981" />
+        <Text className="text-xs font-medium text-slate-700">Titik Lokasi Kejadian</Text>
       </View>
 
       <View style={styles.mapContainer}>
@@ -35,16 +35,16 @@ export default function LocationPreview({ latitude, longitude, address }: Locati
         >
           <Marker
             coordinate={{ latitude, longitude }}
-            pinColor="#6FCF97"
+            pinColor="#10B981"
             title={address || 'Lokasi Kejadian'}
           />
         </MapView>
       </View>
 
       {address ? (
-        <View className="rounded-2xl border border-stone-200 bg-stone-50/50 p-3">
-          <Text className="text-xs font-bold text-ink">Alamat Kejadian:</Text>
-          <Text className="text-[12px] text-inkMuted leading-[17px] mt-0.5">{address}</Text>
+        <View className="rounded-xl border border-slate-200 bg-slate-50/60 p-3 space-y-1">
+          <Text className="text-[11px] font-medium text-slate-700">Alamat Kejadian:</Text>
+          <Text className="text-[11px] text-slate-500 font-normal leading-relaxed">{address}</Text>
         </View>
       ) : null}
     </View>
@@ -55,10 +55,10 @@ const styles = StyleSheet.create({
   mapContainer: {
     height: 180,
     width: '100%',
-    borderRadius: 20,
+    borderRadius: 16,
     overflow: 'hidden',
     borderWidth: 1,
-    borderColor: '#e7e5e4',
+    borderColor: '#E2E8F0',
   },
   map: {
     ...StyleSheet.absoluteFillObject,
